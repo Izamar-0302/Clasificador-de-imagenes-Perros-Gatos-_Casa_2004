@@ -269,10 +269,8 @@ clases = cargar_clases()
 # SUBIR IMAGEN
 # =====================================================
 
-st.markdown('<span class="upload-tag">Subir imagen</span>', unsafe_allow_html=True)
-
 archivo = st.file_uploader(
-    "Seleccione una imagen JPG, JPEG o PNG",
+    "Subir imagen",
     type=["jpg", "jpeg", "png"]
 )
 
