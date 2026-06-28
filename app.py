@@ -72,7 +72,7 @@ col1, col2 = st.columns(2)
 col1.metric("Estudiante", "Angeles Euceda")
 col1.metric("Numero de Cuenta", "20221930061")
 col2.metric("Clase", "IA - ISC")
-col2.metric("Campus / Ano", "Comayagua 2026")
+col2.metric("Campus / Año", "Comayagua 2026")
 
 st.divider()
 
