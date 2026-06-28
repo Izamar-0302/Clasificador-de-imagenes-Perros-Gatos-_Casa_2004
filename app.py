@@ -22,10 +22,8 @@ st.set_page_config(
 st.markdown("""
 <style>
 /* ── Fuentes ── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif;
+html, body, [class*="css"], * {
+    font-family: 'Times New Roman', Times, serif !important;
 }
 
 /* ── Fondo general ── */
