@@ -16,266 +16,209 @@ st.set_page_config(
 )
 
 # =====================================================
-# CSS personalizado — diseño moderno azul/blanco
+# CSS — diseño limpio con líneas, sin emojis
 # =====================================================
 
 st.markdown("""
 <style>
-/* ── Fuentes ── */
 html, body, [class*="css"], * {
     font-family: 'Times New Roman', Times, serif !important;
 }
 
-/* ── Fondo general ── */
 .stApp {
-    background: linear-gradient(160deg, #EEF4FF 0%, #F8FAFF 60%, #E8F0FE 100%);
+    background: #F5F7FA;
     min-height: 100vh;
 }
 
-/* ── Ocultar elementos por defecto de Streamlit ── */
 #MainMenu, footer, header { visibility: hidden; }
-.block-container { padding-top: 0 !important; max-width: 720px !important; }
+.block-container {
+    padding-top: 2rem !important;
+    max-width: 700px !important;
+}
 
-/* ── ENCABEZADO con degradado ── */
-.hero-header {
-    background: linear-gradient(135deg, #1A56DB 0%, #1E40AF 40%, #1D4ED8 70%, #2563EB 100%);
-    border-radius: 0 0 32px 32px;
-    padding: 48px 32px 40px;
-    text-align: center;
-    margin: -1rem -1rem 2rem -1rem;
-    box-shadow: 0 8px 32px rgba(37, 99, 235, 0.30);
-    position: relative;
-    overflow: hidden;
+/* ── ENCABEZADO ── */
+.app-header {
+    border-top: 4px solid #1D4ED8;
+    border-bottom: 1px solid #CBD5E1;
+    padding: 28px 0 20px;
+    margin-bottom: 28px;
 }
-.hero-header::before {
-    content: '';
-    position: absolute;
-    top: -40px; right: -40px;
-    width: 220px; height: 220px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.07);
+.app-header-tag {
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #1D4ED8;
+    font-weight: 700;
+    margin-bottom: 8px;
 }
-.hero-header::after {
-    content: '';
-    position: absolute;
-    bottom: -60px; left: -30px;
-    width: 280px; height: 280px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.05);
-}
-.hero-icons {
-    font-size: 56px;
-    line-height: 1;
-    margin-bottom: 12px;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
-}
-.hero-title {
-    color: #FFFFFF;
-    font-size: 1.85rem;
-    font-weight: 800;
-    margin: 0 0 6px 0;
-    letter-spacing: -0.3px;
+.app-header-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0 0 4px 0;
     line-height: 1.2;
 }
-.hero-subtitle {
-    color: rgba(255,255,255,0.82);
-    font-size: 0.95rem;
-    font-weight: 400;
+.app-header-sub {
+    font-size: 0.88rem;
+    color: #64748B;
     margin: 0;
 }
 
-/* ── TARJETA DE PROYECTO ── */
-.project-card {
-    background: #FFFFFF;
-    border: 1px solid #DBEAFE;
-    border-radius: 16px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 2px 12px rgba(37,99,235,0.08);
+/* ── TABLA DE PROYECTO ── */
+.project-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 28px;
+    font-size: 0.875rem;
 }
-.project-card-title {
-    font-size: 0.75rem;
-    font-weight: 700;
+.project-table caption {
+    text-align: left;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #2563EB;
-    margin-bottom: 12px;
+    color: #1D4ED8;
+    font-weight: 700;
+    padding-bottom: 8px;
 }
-.project-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px 16px;
+.project-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #E2E8F0;
+    color: #334155;
 }
-.project-item {
-    display: flex;
-    flex-direction: column;
-}
-.project-label {
-    font-size: 0.70rem;
-    color: #6B7280;
-    font-weight: 600;
+.project-table td:first-child {
+    color: #94A3B8;
+    font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    width: 38%;
+    border-right: 1px solid #E2E8F0;
 }
-.project-value {
-    font-size: 0.88rem;
-    color: #111827;
-    font-weight: 500;
-}
-
-/* ── SECCIÓN UPLOAD ── */
-.upload-label {
-    font-size: 0.82rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #2563EB;
-    margin-bottom: 8px;
-    display: block;
-}
-.upload-area {
-    background: #FFFFFF;
-    border: 2px dashed #93C5FD;
-    border-radius: 16px;
-    padding: 8px 16px 16px;
-    transition: border-color 0.2s;
-    box-shadow: 0 2px 8px rgba(37,99,235,0.06);
-    margin-bottom: 24px;
-}
-.upload-hint {
-    text-align: center;
-    color: #6B7280;
-    font-size: 0.82rem;
-    margin-top: 4px;
+.project-table tr:last-child td {
+    border-bottom: none;
 }
 
-
-/* ── IMAGEN con borde y sombra ── */
+/* ── IMAGEN ── */
 .img-frame {
-    border: 3px solid #BFDBFE;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 8px 28px rgba(37,99,235,0.18);
+    border: 1px solid #CBD5E1;
+    border-top: 3px solid #1D4ED8;
     margin-bottom: 24px;
+    background: #fff;
 }
-.img-frame img {
-    display: block;
-    width: 100%;
-}
+.img-frame img { display: block; width: 100%; }
 
-/* ── TARJETA RESULTADO ── */
-.result-card {
+/* ── RESULTADO ── */
+.result-block {
+    border: 1px solid #E2E8F0;
+    border-left: 4px solid #1D4ED8;
     background: #FFFFFF;
-    border: 1px solid #DBEAFE;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 4px 20px rgba(37,99,235,0.10);
+    padding: 20px 24px;
     margin-bottom: 20px;
 }
-.result-label {
-    font-size: 0.75rem;
-    font-weight: 700;
+.result-tag {
+    font-size: 0.72rem;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #6B7280;
-    margin-bottom: 8px;
-}
-.result-animal {
-    font-size: 2rem;
-    font-weight: 800;
-    color: #1D4ED8;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-.confidence-label {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: #374151;
+    color: #94A3B8;
     margin-bottom: 6px;
+}
+.result-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin-bottom: 20px;
+    line-height: 1;
+}
+.conf-row {
     display: flex;
     justify-content: space-between;
+    font-size: 0.80rem;
+    color: #475569;
+    margin-bottom: 6px;
 }
 .bar-track {
-    background: #EFF6FF;
-    border-radius: 99px;
-    height: 12px;
-    overflow: hidden;
-    border: 1px solid #BFDBFE;
+    background: #E2E8F0;
+    height: 6px;
+    width: 100%;
 }
 .bar-fill {
     height: 100%;
-    border-radius: 99px;
-    background: linear-gradient(90deg, #2563EB 0%, #60A5FA 100%);
-    animation: growBar 0.9s cubic-bezier(0.34,1.2,0.64,1) forwards;
-    transform-origin: left;
+    background: #1D4ED8;
+    animation: growBar 0.8s ease-out forwards;
 }
-@keyframes growBar {
-    from { width: 0%; }
-}
+@keyframes growBar { from { width: 0%; } }
 
 /* ── ESTADO VACÍO ── */
 .empty-state {
+    border: 1px dashed #CBD5E1;
+    padding: 48px 24px;
     text-align: center;
-    padding: 40px 24px;
-    color: #9CA3AF;
+    color: #94A3B8;
+    font-size: 0.9rem;
+    margin-top: 8px;
+    background: #fff;
 }
-.empty-icon { font-size: 48px; margin-bottom: 10px; }
-.empty-text { font-size: 0.95rem; }
+
+/* ── SUBIR IMAGEN LABEL ── */
+.upload-tag {
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #1D4ED8;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: block;
+    border-top: 1px solid #E2E8F0;
+    padding-top: 20px;
+}
 
 /* ── RESPONSIVE ── */
 @media (max-width: 480px) {
-    .hero-title { font-size: 1.35rem; }
-    .hero-icons { font-size: 42px; }
-    .project-grid { grid-template-columns: 1fr; }
-    .hero-header { padding: 36px 20px 30px; }
+    .app-header-title { font-size: 1.3rem; }
+    .result-name { font-size: 1.5rem; }
 }
 </style>
 """, unsafe_allow_html=True)
 
 # =====================================================
-# ENCABEZADO con degradado
+# ENCABEZADO
 # =====================================================
 
 st.markdown("""
-<div class="hero-header">
-    <div class="hero-icons">🐱🐶</div>
-    <h1 class="hero-title">Clasificador de Gatos y Perros</h1>
-    <p class="hero-subtitle">Modelo Predictivo con MobileNetV2 | Inteligencia Artificial ISC</p>
+<div class="app-header">
+    <div class="app-header-tag">Inteligencia Artificial — ISC</div>
+    <h1 class="app-header-title">Clasificador de Gatos y Perros</h1>
+    <p class="app-header-sub">Modelo Predictivo con MobileNetV2</p>
 </div>
 """, unsafe_allow_html=True)
 
 # =====================================================
-# TARJETA DE INFORMACIÓN DEL PROYECTO
+# INFORMACION DEL PROYECTO
 # =====================================================
 
 st.markdown("""
-<div class="project-card">
-    <div class="project-card-title">📋 Información del Proyecto</div>
-    <div class="project-grid">
-        <div class="project-item">
-            <span class="project-label">Estudiante</span>
-            <span class="project-value">Angeles Euceda</span>
-        </div>
-        <div class="project-item">
-            <span class="project-label">Número de Cuenta</span>
-            <span class="project-value">20221930061</span>
-        </div>
-        <div class="project-item">
-            <span class="project-label">Clase</span>
-            <span class="project-value">Inteligencia Artificial | ISC</span>
-        </div>
-        <div class="project-item">
-            <span class="project-label">Campus / Año</span>
-            <span class="project-value">Comayagua | 2026</span>
-        </div>
-    </div>
-</div>
+<table class="project-table">
+    <caption>Informacion del Proyecto</caption>
+    <tr>
+        <td>Estudiante</td>
+        <td>Angeles Euceda</td>
+    </tr>
+    <tr>
+        <td>Numero de Cuenta</td>
+        <td>20221930061</td>
+    </tr>
+    <tr>
+        <td>Clase</td>
+        <td>Inteligencia Artificial — ISC</td>
+    </tr>
+    <tr>
+        <td>Campus / Ano</td>
+        <td>Comayagua, 2026</td>
+    </tr>
+</table>
 """, unsafe_allow_html=True)
 
 # =====================================================
-# Configuración
+# Configuracion
 # =====================================================
 
 IMG_SIZE = (224, 224)
@@ -286,7 +229,6 @@ MODEL_PATHS = [
     MODEL_DIR / "gatos_perros_mobilenet.h5"
 ]
 LABELS_ES = {"Gatos": "Gato", "Perros": "Perro"}
-ANIMAL_ICON = {"Gato": "🐱", "Perro": "🐶"}
 
 # =====================================================
 # Cargar modelo y clases
@@ -297,7 +239,7 @@ def cargar_modelo():
     for path in MODEL_PATHS:
         if path.exists():
             return tf.keras.models.load_model(path, compile=False)
-    st.error("No se encontró el modelo. Coloque la carpeta 'modelo_gatos_perros' junto al archivo app.py.")
+    st.error("No se encontro el modelo. Coloque la carpeta 'modelo_gatos_perros' junto al archivo app.py.")
     st.stop()
 
 @st.cache_data
@@ -324,19 +266,15 @@ modelo = cargar_modelo()
 clases = cargar_clases()
 
 # =====================================================
-# ÁREA DE CARGA
+# SUBIR IMAGEN
 # =====================================================
 
-st.markdown('<span class="upload-label">📤 Subir imagen</span>', unsafe_allow_html=True)
-st.markdown('<div class="upload-area">', unsafe_allow_html=True)
+st.markdown('<span class="upload-tag">Subir imagen</span>', unsafe_allow_html=True)
 
 archivo = st.file_uploader(
-    "Arrastra una imagen aquí o haz clic para seleccionarla",
-    type=["jpg", "jpeg", "png"],
-    label_visibility="collapsed"
+    "Seleccione una imagen JPG, JPEG o PNG",
+    type=["jpg", "jpeg", "png"]
 )
-st.markdown('<p class="upload-hint">Formatos aceptados: JPG | JPEG | PNG</p>', unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
 
 # =====================================================
 # RESULTADO
@@ -345,21 +283,18 @@ st.markdown('</div>', unsafe_allow_html=True)
 if archivo is not None:
     imagen = Image.open(archivo)
 
-    # Imagen con borde y sombra
     st.markdown('<div class="img-frame">', unsafe_allow_html=True)
     st.image(imagen, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
     clase, confianza = predecir(imagen)
     nombre = LABELS_ES.get(clase, clase)
-    icono = ANIMAL_ICON.get(nombre, "🐾")
 
-    # Tarjeta resultado con barra animada
     st.markdown(f"""
-<div class="result-card">
-    <div class="result-label">Resultado de la Clasificación</div>
-    <div class="result-animal">{icono} {nombre}</div>
-    <div class="confidence-label">
+<div class="result-block">
+    <div class="result-tag">Resultado de la Clasificacion</div>
+    <div class="result-name">{nombre}</div>
+    <div class="conf-row">
         <span>Confianza del modelo</span>
         <span><strong>{confianza:.1f}%</strong></span>
     </div>
@@ -372,7 +307,6 @@ if archivo is not None:
 else:
     st.markdown("""
 <div class="empty-state">
-    <div class="empty-icon">🖼️</div>
-    <div class="empty-text">Sube una imagen para comenzar la clasificación</div>
+    Sube una imagen para comenzar la clasificacion.
 </div>
 """, unsafe_allow_html=True)
