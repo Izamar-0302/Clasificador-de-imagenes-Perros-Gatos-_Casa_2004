@@ -5,98 +5,11 @@ import streamlit as st
 import tensorflow as tf
 from PIL import Image
 
-# =====================================================
-# Configuracion de la pagina
-# =====================================================
-
 st.set_page_config(
     page_title="Clasificador de Gatos y Perros IA_ISC",
     layout="centered",
     initial_sidebar_state="collapsed"
 )
-
-# =====================================================
-# CSS — todo en un solo bloque, sin HTML mezclado
-# =====================================================
-
-st.markdown("""
-<style>
-html, body, [class*="css"], * {
-    font-family: 'Times New Roman', Times, serif !important;
-}
-.stApp {
-    background: #F5F7FA;
-}
-#MainMenu, footer, header { visibility: hidden; }
-.block-container {
-    padding-top: 2rem !important;
-    max-width: 700px !important;
-}
-
-/* Linea azul arriba de toda la pagina */
-.stApp::before {
-    content: '';
-    display: block;
-    height: 4px;
-    background: #1D4ED8;
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 9999;
-}
-
-/* Titulos de Streamlit */
-h1 {
-    font-size: 1.75rem !important;
-    font-weight: 700 !important;
-    color: #0F172A !important;
-    border-bottom: 1px solid #CBD5E1;
-    padding-bottom: 12px;
-    margin-bottom: 4px !important;
-}
-
-/* Barra de confianza */
-.bar-track {
-    background: #E2E8F0;
-    height: 6px;
-    width: 100%;
-    margin-top: 6px;
-}
-.bar-fill {
-    height: 100%;
-    background: #1D4ED8;
-    animation: growBar 0.8s ease-out forwards;
-}
-@keyframes growBar { from { width: 0%; } }
-
-.result-block {
-    border-left: 4px solid #1D4ED8;
-    background: #FFFFFF;
-    padding: 20px 24px;
-    margin-top: 16px;
-    border: 1px solid #E2E8F0;
-    border-left: 4px solid #1D4ED8;
-}
-.result-tag {
-    font-size: 0.72rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #94A3B8;
-    margin-bottom: 6px;
-}
-.result-name {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #0F172A;
-    margin-bottom: 20px;
-}
-.conf-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.82rem;
-    color: #475569;
-}
-</style>
-""", unsafe_allow_html=True)
 
 # =====================================================
 # Configuracion
@@ -147,7 +60,7 @@ modelo = cargar_modelo()
 clases = cargar_clases()
 
 # =====================================================
-# INTERFAZ — solo componentes nativos de Streamlit
+# INTERFAZ — 100% componentes nativos, cero HTML
 # =====================================================
 
 st.title("Clasificador de Gatos y Perros")
@@ -172,19 +85,11 @@ if archivo is not None:
     clase, confianza = predecir(imagen)
     nombre = LABELS_ES.get(clase, clase)
 
-    st.markdown(f"""
-<div class="result-block">
-    <div class="result-tag">Resultado de la Clasificacion</div>
-    <div class="result-name">{nombre}</div>
-    <div class="conf-row">
-        <span>Confianza del modelo</span>
-        <span><strong>{confianza:.1f}%</strong></span>
-    </div>
-    <div class="bar-track">
-        <div class="bar-fill" style="width:{confianza:.1f}%;"></div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+    st.divider()
+    st.subheader("Resultado")
+    st.write(f"**Prediccion:** {nombre}")
+    st.write("**Confianza del modelo**")
+    st.progress(confianza / 100, text=f"{confianza:.1f}%")
 
 else:
     st.info("Sube una imagen para comenzar la clasificacion.")
