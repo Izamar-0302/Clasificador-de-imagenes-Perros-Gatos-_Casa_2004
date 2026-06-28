@@ -154,6 +154,38 @@ html, body, [class*="css"], * {
     background: transparent !important;
     padding: 0 !important;
 }
+[data-testid="stFileUploader"] section {
+    border: none !important;
+    background: transparent !important;
+    padding: 4px 0 !important;
+}
+[data-testid="stFileUploaderDropzone"] {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+[data-testid="stFileUploaderDropzoneInstructions"] {
+    display: none !important;
+}
+[data-testid="stFileUploader"] button {
+    background: linear-gradient(135deg, #1A56DB, #2563EB) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 10px 28px !important;
+    font-size: 0.9rem !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(37,99,235,0.30) !important;
+}
+[data-testid="stFileUploader"] small {
+    display: none !important;
+}
 
 /* ── IMAGEN con borde y sombra ── */
 .img-frame {
@@ -257,7 +289,7 @@ st.markdown("""
 
 st.markdown("""
 <div class="project-card">
-    <div class="project-card-title">📋 Información del Proyecto</div>
+    <div class="project-card-title">Información del Proyecto</div>
     <div class="project-grid">
         <div class="project-item">
             <span class="project-label">Estudiante</span>
@@ -332,7 +364,7 @@ clases = cargar_clases()
 # ÁREA DE CARGA
 # =====================================================
 
-st.markdown('<span class="upload-label">📤 Subir imagen</span>', unsafe_allow_html=True)
+st.markdown('<span class="upload-label"> Subir imagen</span>', unsafe_allow_html=True)
 st.markdown('<div class="upload-area">', unsafe_allow_html=True)
 
 archivo = st.file_uploader(
