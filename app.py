@@ -1,44 +1,43 @@
-pp · PY
 import json
 from pathlib import Path
 import numpy as np
 import streamlit as st
 import tensorflow as tf
 from PIL import Image
- 
+
 # =====================================================
 # Configuración de la página
 # =====================================================
- 
+
 st.set_page_config(
     page_title="Clasificador de Gatos y Perros IA_ISC",
     layout="centered",
     initial_sidebar_state="collapsed"
 )
- 
+
 # =====================================================
 # CSS personalizado — diseño moderno azul/blanco
 # =====================================================
- 
+
 st.markdown("""
 <style>
 /* ── Fuentes ── */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
- 
+
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
- 
+
 /* ── Fondo general ── */
 .stApp {
     background: linear-gradient(160deg, #EEF4FF 0%, #F8FAFF 60%, #E8F0FE 100%);
     min-height: 100vh;
 }
- 
+
 /* ── Ocultar elementos por defecto de Streamlit ── */
 #MainMenu, footer, header { visibility: hidden; }
 .block-container { padding-top: 0 !important; max-width: 720px !important; }
- 
+
 /* ── ENCABEZADO con degradado ── */
 .hero-header {
     background: linear-gradient(135deg, #1A56DB 0%, #1E40AF 40%, #1D4ED8 70%, #2563EB 100%);
@@ -86,7 +85,7 @@ html, body, [class*="css"] {
     font-weight: 400;
     margin: 0;
 }
- 
+
 /* ── TARJETA DE PROYECTO ── */
 .project-card {
     background: #FFFFFF;
@@ -125,7 +124,7 @@ html, body, [class*="css"] {
     color: #111827;
     font-weight: 500;
 }
- 
+
 /* ── SECCIÓN UPLOAD ── */
 .upload-label {
     font-size: 0.82rem;
@@ -157,7 +156,7 @@ html, body, [class*="css"] {
     background: transparent !important;
     padding: 0 !important;
 }
- 
+
 /* ── IMAGEN con borde y sombra ── */
 .img-frame {
     border: 3px solid #BFDBFE;
@@ -170,7 +169,7 @@ html, body, [class*="css"] {
     display: block;
     width: 100%;
 }
- 
+
 /* ── TARJETA RESULTADO ── */
 .result-card {
     background: #FFFFFF;
@@ -222,7 +221,7 @@ html, body, [class*="css"] {
 @keyframes growBar {
     from { width: 0%; }
 }
- 
+
 /* ── ESTADO VACÍO ── */
 .empty-state {
     text-align: center;
@@ -231,7 +230,7 @@ html, body, [class*="css"] {
 }
 .empty-icon { font-size: 48px; margin-bottom: 10px; }
 .empty-text { font-size: 0.95rem; }
- 
+
 /* ── RESPONSIVE ── */
 @media (max-width: 480px) {
     .hero-title { font-size: 1.35rem; }
@@ -241,23 +240,23 @@ html, body, [class*="css"] {
 }
 </style>
 """, unsafe_allow_html=True)
- 
+
 # =====================================================
 # ENCABEZADO con degradado
 # =====================================================
- 
+
 st.markdown("""
 <div class="hero-header">
     <div class="hero-icons">🐱🐶</div>
     <h1 class="hero-title">Clasificador de Gatos y Perros</h1>
-    <p class="hero-subtitle">Modelo Predictivo con MobileNetV2 · Inteligencia Artificial ISC</p>
+    <p class="hero-subtitle">Modelo Predictivo con MobileNetV2 | Inteligencia Artificial ISC</p>
 </div>
 """, unsafe_allow_html=True)
- 
+
 # =====================================================
 # TARJETA DE INFORMACIÓN DEL PROYECTO
 # =====================================================
- 
+
 st.markdown("""
 <div class="project-card">
     <div class="project-card-title">📋 Información del Proyecto</div>
@@ -272,20 +271,20 @@ st.markdown("""
         </div>
         <div class="project-item">
             <span class="project-label">Clase</span>
-            <span class="project-value">Inteligencia Artificial · ISC</span>
+            <span class="project-value">Inteligencia Artificial | ISC</span>
         </div>
         <div class="project-item">
             <span class="project-label">Campus / Año</span>
-            <span class="project-value">Comayagua · 2026</span>
+            <span class="project-value">Comayagua | 2026</span>
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
- 
+
 # =====================================================
 # Configuración
 # =====================================================
- 
+
 IMG_SIZE = (224, 224)
 MODEL_DIR = Path("modelo_gatos_perros")
 CLASS_PATH = MODEL_DIR / "class_names.json"
@@ -295,11 +294,11 @@ MODEL_PATHS = [
 ]
 LABELS_ES = {"Gatos": "Gato", "Perros": "Perro"}
 ANIMAL_ICON = {"Gato": "🐱", "Perro": "🐶"}
- 
+
 # =====================================================
 # Cargar modelo y clases
 # =====================================================
- 
+
 @st.cache_resource
 def cargar_modelo():
     for path in MODEL_PATHS:
@@ -307,61 +306,61 @@ def cargar_modelo():
             return tf.keras.models.load_model(path, compile=False)
     st.error("No se encontró el modelo. Coloque la carpeta 'modelo_gatos_perros' junto al archivo app.py.")
     st.stop()
- 
+
 @st.cache_data
 def cargar_clases():
     if CLASS_PATH.exists():
         with open(CLASS_PATH, "r", encoding="utf-8") as f:
             return json.load(f)
     return ["Gatos", "Perros"]
- 
+
 def preparar_imagen(img):
     img = img.convert("RGB").resize(IMG_SIZE)
     arr = np.array(img, dtype=np.float32)
     arr = tf.keras.applications.mobilenet_v2.preprocess_input(arr)
     return np.expand_dims(arr, axis=0)
- 
+
 def predecir(img):
     predicciones = modelo.predict(preparar_imagen(img), verbose=0)[0]
     indice = np.argmax(predicciones)
     clase = clases[indice]
     confianza = float(predicciones[indice]) * 100
     return clase, confianza
- 
+
 modelo = cargar_modelo()
 clases = cargar_clases()
- 
+
 # =====================================================
 # ÁREA DE CARGA
 # =====================================================
- 
+
 st.markdown('<span class="upload-label">📤 Subir imagen</span>', unsafe_allow_html=True)
 st.markdown('<div class="upload-area">', unsafe_allow_html=True)
- 
+
 archivo = st.file_uploader(
     "Arrastra una imagen aquí o haz clic para seleccionarla",
     type=["jpg", "jpeg", "png"],
     label_visibility="collapsed"
 )
-st.markdown('<p class="upload-hint">Formatos aceptados: JPG · JPEG · PNG</p>', unsafe_allow_html=True)
+st.markdown('<p class="upload-hint">Formatos aceptados: JPG | JPEG | PNG</p>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
- 
+
 # =====================================================
 # RESULTADO
 # =====================================================
- 
+
 if archivo is not None:
     imagen = Image.open(archivo)
- 
+
     # Imagen con borde y sombra
     st.markdown('<div class="img-frame">', unsafe_allow_html=True)
     st.image(imagen, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
- 
+
     clase, confianza = predecir(imagen)
     nombre = LABELS_ES.get(clase, clase)
     icono = ANIMAL_ICON.get(nombre, "🐾")
- 
+
     # Tarjeta resultado con barra animada
     st.markdown(f"""
 <div class="result-card">
@@ -376,7 +375,7 @@ if archivo is not None:
     </div>
 </div>
 """, unsafe_allow_html=True)
- 
+
 else:
     st.markdown("""
 <div class="empty-state">
