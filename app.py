@@ -269,9 +269,12 @@ clases = cargar_clases()
 # SUBIR IMAGEN
 # =====================================================
 
+st.write("**Subir imagen**")
+
 archivo = st.file_uploader(
-    "Subir imagen",
-    type=["jpg", "jpeg", "png"]
+    "Seleccione una imagen",
+    type=["jpg", "jpeg", "png"],
+    label_visibility="collapsed"
 )
 
 # =====================================================
@@ -280,10 +283,7 @@ archivo = st.file_uploader(
 
 if archivo is not None:
     imagen = Image.open(archivo)
-
-    st.markdown('<div class="img-frame">', unsafe_allow_html=True)
     st.image(imagen, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
     clase, confianza = predecir(imagen)
     nombre = LABELS_ES.get(clase, clase)
