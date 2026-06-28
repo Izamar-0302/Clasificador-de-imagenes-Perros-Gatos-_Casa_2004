@@ -1,0 +1,9 @@
+tensorflow
+matplotlib 
+numpy
+Pillow
+opencv-python-headless
+streamlit
+h5
+keras
+
